@@ -111,7 +111,7 @@ def _build_window(dat_path: str, seq_path: str) -> MainWindow:
         f"recon grid will be {trajectory.n_lines}x{trajectory.n_lines}"
     )
 
-    engine = ReconEngine(trajectory)
+    engine = ReconEngine(trajectory, calib=data.calib)
     window = MainWindow(
         data,
         trajectory,

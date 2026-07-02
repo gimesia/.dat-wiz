@@ -98,6 +98,7 @@ top only while a reconstruction runs.
 | Area | What it does |
 |------|--------------|
 | **Open .dat…** (top-left) | Load a different `.dat` for a new analysis — opens in a fresh window, its `.seq` auto-located. |
+| **Calibration data…** (left) | Opens a separate window with navigator/phase-correction diagnostics in a 2×2 grid — **magnitude** on the left (k-space + image-space), **phase** on the right (per-navigator image phase + the neg-vs-pos phase ramp). Has a coil selector and a coil-combined (SOS) toggle. Disabled if the file has no `phasecor` data. |
 | **Dimensions** (left) | One selector per non-singleton ICE dimension (echo, repetition, …). Singleton and coil/slice dims are not shown here. |
 | **Coil slider** (top) | Picks the receive channel shown in the k-space panel and used for single-coil recon. |
 | **k-space panel** (center-left) | Magnitude of the selected k-space plane, grayscale. |
@@ -106,7 +107,7 @@ top only while a reconstruction runs.
 | **Run NUFFT Recon** | Reconstructs the current selection into the right panel. |
 | **SOS** (top-right) | Combine all coils (sum-of-squares) instead of a single coil. |
 | **Reconstruction panel** (right) | The reconstructed image, grayscale. |
-| **Toggles** (far right) | Recon options that change the reconstruction. **Reverse odd lines** (on by default) flips odd EPI lines to remove the N/2 ghost; turn it off to see the raw (ghosted) image. Toggling reconstructs immediately. |
+| **Toggles** (far right) | Recon options that change the reconstruction; toggling reconstructs immediately. **Reverse odd lines** (on by default) flips odd EPI lines to remove the N/2 ghost — turn it off to see the raw (ghosted) image. **Ghost correction (nav)** (off by default) applies the navigator-based phase correction (Nunes-style, via 1-D NUFFTs) on top, removing the residual ghost the flip alone leaves; disabled if the file has no navigator/calibration data. |
 | **cached** | Lights up when the shown recon came from the in-memory cache. |
 
 ---

@@ -21,6 +21,7 @@ pg.setConfigOptions(imageAxisOrder="row-major")
 # they appear in the panel and fold into the recon cache key automatically.
 RECON_TOGGLES = [
     ("reverse_odd_lines", "Reverse odd lines", True),
+    ("ghost_correction", "Ghost correction (nav)", False),
 ]
 
 
@@ -115,6 +116,20 @@ class MainWindow(QtWidgets.QMainWindow):
             left.addWidget(warn)
         left.addStretch(1)
 
+        # Calibration / navigator diagnostics (opens a separate window).
+        self.calib_button = QtWidgets.QPushButton("Calibration data…")
+        if self.data.calib is None:
+            self.calib_button.setEnabled(False)
+            self.calib_button.setToolTip(
+                "This file has no navigator/calibration (phasecor) data."
+            )
+        else:
+            self.calib_button.setToolTip(
+                "Show navigator / phase-correction diagnostics for this scan."
+            )
+        self.calib_button.clicked.connect(self.on_open_calibration)
+        left.addWidget(self.calib_button)
+
         # Batch: reconstruct every selector/slice combination up front.
         self.recon_all_button = QtWidgets.QPushButton("Reconstruct All")
         self.recon_all_button.setToolTip(
@@ -167,6 +182,10 @@ class MainWindow(QtWidgets.QMainWindow):
         for key, label, default in RECON_TOGGLES:
             cb = QtWidgets.QCheckBox(label)
             cb.setChecked(default)                       # set before connect
+            if key == "ghost_correction" and not self.engine.can_ghost_correct:
+                cb.setChecked(False)
+                cb.setEnabled(False)
+                cb.setToolTip("This file has no navigator/calibration (phasecor) data.")
             cb.stateChanged.connect(self.on_toggle_change)
             tg_layout.addWidget(cb)
             self._toggle_boxes[key] = cb
@@ -373,3 +392,19 @@ class MainWindow(QtWidgets.QMainWindow):
         if win is not None:
             win.show()
             self.close()
+
+    def on_open_calibration(self) -> None:
+        """Open the navigator/calibration diagnostics in a separate window."""
+        if self.data.calib is None:
+            QtWidgets.QMessageBox.information(
+                self, "Calibration",
+                "This file has no navigator/calibration (phasecor) data.",
+            )
+            return
+        from .calibration import CalibrationWindow  # lazy (pulls matplotlib)
+
+        # Keep a reference so the window isn't garbage-collected.
+        self._calib_window = CalibrationWindow(
+            self.data.calib, coil_index=self.coil_slider.value(), parent=self
+        )
+        self._calib_window.show()
