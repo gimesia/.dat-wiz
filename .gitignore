@@ -1,0 +1,23 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.ipynb_checkpoints/
+
+# Virtual environments
+venv/
+.venv/
+env/
+
+# Raw data — do not commit scan data
+*.dat
+*.seq
+
+# Machine-specific python path written by Setup_Conda.bat
+env_python.txt
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

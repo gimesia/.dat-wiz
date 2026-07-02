@@ -1,0 +1,8 @@
+numpy
+torch                # array/tensor backend for the NUFFT calls
+pypulseq             # reads the .seq file (k-space trajectory)
+pymapvbvd            # reads Siemens .dat (TWIX);  import name is `mapvbvd`
+mri-nufft[finufft]   # NUFFT operator wrapper
+finufft              # NUFFT backend used by mrinufft (CPU)
+PyQt5                # GUI
+pyqtgraph
